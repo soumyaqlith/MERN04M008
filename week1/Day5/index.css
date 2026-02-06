@@ -29,24 +29,24 @@ h3,span,p{
 
 /* * descedent selector */
 /* it will target the direct element as well as the indirect element */
-div p{
+/* div p{
     background-color: indianred;
-}
+} */
 
 /* * direct child selector */
-p>b{
+/* p>b{
     background-color: darkmagenta;
-}
+} */
 
 /* * adjacent sibling */
-div+p{
+/* div+p{
     background-color: fuchsia;
-}
+} */
 
 /** general sibling */
-div~p{
+/* div~p{
     background-color: chartreuse;
-}
+} */
 
 .box{
     width: 200px;
@@ -55,8 +55,11 @@ div~p{
     border: 1px solid black; 
 }
 
-.box:hover{
+/* .box:hover{
     background-color: chartreuse;
+} */
+
+
+.box>p{
+    background-color: brown;
 }
-
-
