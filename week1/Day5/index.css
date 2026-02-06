@@ -1,0 +1,62 @@
+/* @import url("index2.css"); */
+/* h2{
+    background-color: brown;
+} */
+
+/** universal selector  */
+/* *{
+    color: gold;
+    font-size: 30px;
+} */
+
+/** select by id */
+/* #heading3{
+    background-color: coral;
+} */
+
+/** select by class name */
+/* .class1{
+    background-color: crimson;
+} */
+/** select by tag name  */
+/* p{
+    background-color: deeppink;
+}
+
+h3,span,p{
+    background-color: darkgreen;
+} */
+
+/* * descedent selector */
+/* it will target the direct element as well as the indirect element */
+div p{
+    background-color: indianred;
+}
+
+/* * direct child selector */
+p>b{
+    background-color: darkmagenta;
+}
+
+/* * adjacent sibling */
+div+p{
+    background-color: fuchsia;
+}
+
+/** general sibling */
+div~p{
+    background-color: chartreuse;
+}
+
+.box{
+    width: 200px;
+    height: 200px;
+    /* border : width style color */
+    border: 1px solid black; 
+}
+
+.box:hover{
+    background-color: chartreuse;
+}
+
+
