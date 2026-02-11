@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    border: 2px solid black;
+    width: 600px;
+    height: 300px;
+    display: flex;
+    /* flex-direction: column; */
+    gap: 5px;
+    /* flex-wrap: wrap; */
+    /* align-items: center; */
+    /* justify-content: space-evenly; */
+
+    /* align-content: space-evenly; */
+    /* justify-items: center; */
+}
+
+.box {
+    /* width: 50px; */
+    height: 50px;
+    border: 1px solid blue;
+}
+
+/* .item1{
+    flex-grow: 1;
+} */
+/* .item2{
+    flex-shrink: 1;
+} */
+
+.container-grid {
+    width: 400px;
+    height: 400px;
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2px;
+    border-radius: 10px;
+}
+
+.grid-box {
+    border: 1px solid black;
+}
+
+.item1{
+    /* grid-column-start: 1;
+    grid-column-end: 4; */
+    grid-column: 1/4;
+    /* background-color: green; */
+    background-image: url("https://thumbs.dreamstime.com/b/beautiful-sunset-spring-mountains-view-hills-covered-fresh-blossom-rododendrons-panoramic-landscape-95369533.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 10;
+}
+.item2{
+    /* grid-row-start: 2;
+    grid-row-end: 4; */
+    grid-row: 2/4;
+    background-color: brown;
+}
+.item3{
+    /* grid-column-start: 2;
+    grid-column-end: 4 ; */
+    grid-column: 2/4;
+    background-color: aquamarine;
+}
+
+.item6{
+    /* grid-column-start: 1;
+    grid-column-end: 4; */
+    grid-column: 1/4;
+    /* grid-column: span 3; */
+    background-color: blue;
+}
