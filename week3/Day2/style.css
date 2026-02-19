@@ -1,0 +1,27 @@
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: linear-gradient(to right ,red,green ,blue,yellow);
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.content{
+    width: 400px;
+}
+
+@media screen and (max-width:400px) and (orientation: portrait){
+    .container{
+        width: 100%;
+        flex-direction: column;
+    }
+    img{
+        width: 100%;
+    }
+    .content{
+        color: red;
+        width: 100%;
+    }
+}
