@@ -67,6 +67,6 @@ console.log(str2[0]); //s
 str2[0] = "Ca";
 console.log(str2)
 
-//string is  immutable(we cant change the value)
+//string is immutable(we cant change the value of a particular index)
 
 
