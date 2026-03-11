@@ -94,3 +94,5 @@ let nArr = [1, 2, 3, 2, 3, 4, 5, 6, 7, 6];
 let distinctArr = nArr.filter((v, i) => nArr.indexOf(v) === i);
 console.log(distinctArr)
 
+
+
