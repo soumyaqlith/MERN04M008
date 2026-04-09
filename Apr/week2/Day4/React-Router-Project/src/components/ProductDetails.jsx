@@ -7,28 +7,26 @@ function ProductDetails() {
     const [selectProduct, setSelectProduct] = useState({})
 
     useEffect(() => {
-        const localStorageProducts = JSON.parse(localStorage.getItem("products"));
-        setProducts(localStorageProducts)
+        const localStorageProducts = JSON.parse(localStorage.getItem("products")) || [];
+        setProducts(localStorageProducts);
     }, [])
 
-
     useEffect(() => {
-        let exProduct = products.find((pro) => pro.id == id);
-        // console.log("exProduct", exProduct)
-        setSelectProduct(exProduct)
-    })
-
+        if (products.length > 0) {
+            let exProduct = products.find((pro) => pro.id == id);
+            setSelectProduct(exProduct);
+        }
+    }, [products, id]);
 
     return (
         <div>
             <h1>Product Details</h1>
             <br />
-            <strong>Name :{selectProduct.name}</strong>
+            <strong>Name : {selectProduct?.name}</strong>
             <br />
-            <p>Price :{selectProduct.price}</p>
+            <p>Price : {selectProduct?.price}</p>
             <br />
-            <p>Description :{selectProduct.desc}</p>
-
+            <p>Description : {selectProduct?.desc}</p>
         </div>
     )
 }
