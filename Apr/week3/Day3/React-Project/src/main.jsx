@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-  <ToastContainer position="left-right" theme= "dark" />
+  <ToastContainer theme= "dark" />
     <App />
   </BrowserRouter>,
 )
