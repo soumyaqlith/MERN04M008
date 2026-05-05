@@ -31,5 +31,5 @@ myServer.use("/api/student",studentRoutes);
 const port =process.env.PORT; 
 
 myServer.listen(port, () => {
-    console.log("My server is running !",port)
+    console.log("hello My server is running !",port)
 })
