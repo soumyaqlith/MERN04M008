@@ -66,7 +66,7 @@ const login = async (req, res) => {
             res.status(200).json({ message: "fill the field" })
         }
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email }).select("-createdAt -updatedAt ");
 
         if (!existingUser) {
             res.status(200).json({ message: "Invalid email" });

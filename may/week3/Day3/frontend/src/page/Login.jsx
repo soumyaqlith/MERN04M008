@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from "axios"
+import { useNavigate } from 'react-router'
 
 function Login() {
 
@@ -8,6 +9,8 @@ function Login() {
     email: "",
     password: ""
   })
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +32,11 @@ function Login() {
         password: ""
       })
 
+      const token = response?.data?.token;
+      localStorage.setItem("token", token)
+
       alert(response.data.message)
+      navigate("/allusers")
     } catch (error) {
       // alert(error.message)
       console.log(error)
