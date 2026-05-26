@@ -81,3 +81,16 @@ exports.login = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to login" });
   }
 };
+
+exports.allUsers=async(req,res)=>{
+  try {
+    const users=await User.find().select("-password");
+    if(!users){
+      res.status(404).json({success:false,message:"user not found"})
+    }
+
+    res.status(200).json({success:true,message:"successfully fetched",users})
+  } catch (error) {
+     res.status(500).json({ success: false, message: "Failed to fetch" });
+  }
+}
