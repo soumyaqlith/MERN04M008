@@ -24,19 +24,19 @@ function Navbar() {
 
           {/* NAV LINKS */}
           <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-gray-700 hover:text-black font-medium transition"
             >
               Home
-            </a>
+            </Link>
 
-            <a
-              href="#"
+            <Link
+              to="/vehicles"
               className="text-gray-700 hover:text-black font-medium transition"
             >
               Vehicles
-            </a>
+            </Link>
 
             <a
               href="#"
@@ -83,10 +83,11 @@ function Navbar() {
             </div>
           </div> */}
 
-          <Link 
-          to='/login'
-          className="text-gray-700 hover:text-black font-medium transition bg-yellow-500 p-1 rounded-xl">
-          Login
+          <Link
+            to="/login"
+            className="text-gray-700 hover:text-black font-medium transition bg-yellow-500 p-1 rounded-xl"
+          >
+            Login
           </Link>
 
           <button className="md:hidden p-2 rounded-lg hover:bg-gray-100">

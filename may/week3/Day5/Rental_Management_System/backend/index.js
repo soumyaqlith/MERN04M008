@@ -1,12 +1,18 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const allRoutes = require("./routes/allRoutes");
+const cors = require("cors");
 require("dotenv").config();
 
 const myServer = express();
 
 connectDB();
 myServer.use(express.json());
+myServer.use(
+  cors({
+    origin: "*",
+  }),
+);
 
 myServer.use("/api", allRoutes);
 

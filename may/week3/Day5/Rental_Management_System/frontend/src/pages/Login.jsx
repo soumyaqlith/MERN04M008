@@ -1,9 +1,52 @@
 import React, { useState } from "react";
 import { Car, Eye, EyeOff, Mail, LockKeyhole } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/login`,
+        formData,
+      );
+      console.log(res.data);
+      if (res.data.success) {
+        const token = res.data.token;
+        const user = res.data.user;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        setFormData({
+          email: "",
+          password: "",
+        });
+
+        navigate("/profile");
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4">
@@ -73,7 +116,7 @@ function Login() {
           </div>
 
           {/* FORM */}
-          <form className="space-y-6">
+          <div className="space-y-6">
             {/* EMAIL */}
             <div>
               <label className="text-sm font-medium text-gray-700">
@@ -87,6 +130,9 @@ function Login() {
                   type="email"
                   placeholder="Enter your email"
                   className="w-full px-3 outline-none bg-transparent"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -104,6 +150,9 @@ function Login() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   className="w-full px-3 outline-none bg-transparent"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
 
                 <button
@@ -121,7 +170,6 @@ function Login() {
 
             {/* OPTIONS */}
             <div className="flex items-center justify-end text-sm">
-
               <button
                 type="button"
                 className="text-black font-medium hover:underline"
@@ -131,18 +179,23 @@ function Login() {
             </div>
 
             {/* LOGIN BUTTON */}
-            <button className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-2xl font-semibold text-lg transition duration-300 shadow-lg">
+            <button
+              onClick={handleLogin}
+              className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-2xl font-semibold text-lg transition duration-300 shadow-lg"
+            >
               Login
             </button>
-          </form>
+          </div>
 
           {/* FOOTER */}
           <p className="text-center text-gray-500 text-sm mt-2">
-            if you are new user 
-            <Link 
-            to='/register'
-            className="text-black font-medium hover:underline"
-            >Register</Link>
+            if you are new user
+            <Link
+              to="/register"
+              className="text-black font-medium hover:underline"
+            >
+              Register
+            </Link>
           </p>
           <p className="text-center text-gray-500 text-sm mt-2">
             © 2026 RentRide. All rights reserved.

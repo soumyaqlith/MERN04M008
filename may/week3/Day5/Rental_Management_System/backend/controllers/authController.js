@@ -4,21 +4,20 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-    const { name, age, phone, email, password, profile_image, address } =
-      req.body;
+    const { name, age, phone, email, password } = req.body;
 
     if (!name || !age || !phone || !email || !password) {
-      res.status(400).json({ success: false, message: "fill the field" });
+      res.status(200).json({ success: false, message: "fill the field" });
     }
     const existUser = await User.findOne({ email }).select("-password");
 
     if (existUser) {
-      res.status(400).json({ success: false, message: "user already exist" });
+      res.status(200).json({ success: false, message: "user already exist" });
     } else {
       bcrypt.hash(password, 10, async function (err, hash) {
         if (err) {
           res
-            .status(400)
+            .status(200)
             .json({ success: false, message: "failed to convert into hash" });
         }
 
@@ -28,8 +27,6 @@ exports.register = async (req, res) => {
           phone,
           email,
           password: hash,
-          profile_image,
-          address,
         });
 
         await user.save();
@@ -49,13 +46,13 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ success: false, message: "fill the field" });
+      res.status(200).json({ success: false, message: "fill the field" });
     }
 
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
-      res.status(400).json({ success: false, message: "Invalid email" });
+      res.status(200).json({ success: false, message: "Invalid email" });
     } else {
       bcrypt.compare(password, existingUser.password, function (err, result) {
         if (result) {
@@ -71,9 +68,10 @@ exports.login = async (req, res) => {
             success: true,
             message: "successfully login",
             token,
+            user:existingUser
           });
         } else {
-          res.status(400).json({ success: false, message: "Invalid password" });
+          res.status(200).json({ success: false, message: "Invalid password" });
         }
       });
     }
@@ -82,15 +80,17 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.allUsers=async(req,res)=>{
+exports.allUsers = async (req, res) => {
   try {
-    const users=await User.find().select("-password");
-    if(!users){
-      res.status(404).json({success:false,message:"user not found"})
+    const users = await User.find().select("-password");
+    if (!users) {
+      res.status(404).json({ success: false, message: "user not found" });
     }
 
-    res.status(200).json({success:true,message:"successfully fetched",users})
+    res
+      .status(200)
+      .json({ success: true, message: "successfully fetched", users });
   } catch (error) {
-     res.status(500).json({ success: false, message: "Failed to fetch" });
+    res.status(500).json({ success: false, message: "Failed to fetch" });
   }
-}
+};

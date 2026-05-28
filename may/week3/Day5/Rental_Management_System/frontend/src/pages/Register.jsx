@@ -14,9 +14,50 @@ import {
   Bike,
   EyeOff,
 } from "lucide-react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleRegister = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/register`,
+        formData,
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setFormData({
+          name: "",
+          age: "",
+          phone: "",
+          email: "",
+          password: "",
+        });
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 via-white to-gray-200 flex items-center justify-center p-4">
@@ -85,8 +126,6 @@ function Register() {
             <h2 className="text-4xl font-bold text-gray-900 flex gap-2">
               Create Account <Bike size={40} color="blue" />
             </h2>
-
-            <p className="text-gray-500 mt-1 text-lg">Step 1 of 2</p>
           </div>
 
           {/* FORM */}
@@ -104,6 +143,9 @@ function Register() {
                   type="text"
                   placeholder="Enter full name"
                   className="w-full px-3 bg-transparent outline-none"
+                  value={formData.name}
+                  name="name"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -123,6 +165,9 @@ function Register() {
                     type="number"
                     placeholder="Age"
                     className="w-full px-3 bg-transparent outline-none"
+                    value={formData.age}
+                    name="age"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -140,6 +185,9 @@ function Register() {
                     type="number"
                     placeholder="Phone number"
                     className="w-full px-3 bg-transparent outline-none"
+                    value={formData.phone}
+                    name="phone"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -158,6 +206,9 @@ function Register() {
                   type="email"
                   placeholder="Enter email address"
                   className="w-full px-3 bg-transparent outline-none"
+                  value={formData.email}
+                  name="email"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -175,6 +226,9 @@ function Register() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create password"
                   className="w-full px-3 bg-transparent outline-none"
+                  value={formData.password}
+                  name="password"
+                  onChange={handleChange}
                 />
 
                 <button
@@ -190,11 +244,12 @@ function Register() {
               </div>
             </div>
 
-            {/* PROFILE IMAGE */}
-
             {/* BUTTONS */}
             <div className="flex gap-4 pt-2">
-              <button className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg">
+              <button
+                onClick={handleRegister}
+                className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
+              >
                 Register
               </button>
             </div>
