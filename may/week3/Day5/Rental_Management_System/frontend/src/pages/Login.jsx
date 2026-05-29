@@ -27,7 +27,7 @@ function Login() {
         `${import.meta.env.VITE_BASE_URL}/auth/login`,
         formData,
       );
-      console.log(res.data);
+      
       if (res.data.success) {
         const token = res.data.token;
         const user = res.data.user;
@@ -38,7 +38,11 @@ function Login() {
           password: "",
         });
 
-        navigate("/profile");
+        if(user.role==="user"){
+          navigate("/profile");
+        }else{
+          navigate("/admin");
+        }
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);

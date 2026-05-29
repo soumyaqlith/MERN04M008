@@ -64,6 +64,11 @@ exports.login = async (req, res) => {
             { expiresIn: "1h" },
           );
 
+          existingUser.toObject();
+          delete existingUser.password;
+
+          // console.log(existingUser);
+
           res.status(200).json({
             success: true,
             message: "successfully login",
