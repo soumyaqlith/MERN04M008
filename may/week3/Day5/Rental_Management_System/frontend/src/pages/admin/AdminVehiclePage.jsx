@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Plus, Car, Fuel, IndianRupee, Pencil, Trash2 } from "lucide-react";
+import {
+  Plus,
+  Car,
+  Fuel,
+  IndianRupee,
+  Pencil,
+  Trash2,
+  Eye,
+} from "lucide-react";
 import VehicleFormModal from "../../components/modals/VehicleFormModal";
 import axios from "axios";
 import VehicleViewModal from "../../components/modals/VehicleViewModal";
+import { toast } from "react-toastify";
 
 function AdminVehiclePage() {
   const [showModal, setShowModal] = useState(false);
@@ -13,6 +22,8 @@ function AdminVehiclePage() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   const [editVehicle, setEditVehicle] = useState(null);
+
+  const token = localStorage.getItem("token");
 
   const fetchVehicles = async () => {
     try {
@@ -34,6 +45,33 @@ function AdminVehiclePage() {
   useEffect(() => {
     fetchVehicles();
   }, []);
+
+  const handleDelete = async (vehicleId) => {
+    try {
+      console.log("hii i want delete");
+
+      const confirmation = confirm("Are you sure to delete the vehicle");
+      if (confirmation) {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASE_URL}/vehicle/delete/${vehicleId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+
+        if (res.data.success) {
+          toast.success(res.data.message);
+        } else {
+          toast.error(res.data.message);
+          fetchVehicles();
+        }
+      } else {
+        toast.error("i dont want");
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className="p-6">
@@ -81,10 +119,6 @@ function AdminVehiclePage() {
             <div
               key={vehicle._id}
               className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden cursor-pointer"
-              onClick={() => {
-                setShowViewModal(true);
-                setSelectedVehicle(vehicle);
-              }}
             >
               {/* Small Image */}
               <div className="relative">
@@ -143,13 +177,26 @@ function AdminVehiclePage() {
                       setEditVehicle(vehicle);
                       setShowModal(true);
                     }}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 rounded-xl text-sm font-medium transition"
+                    className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 rounded-xl text-sm font-medium transition cursor-pointer"
                   >
                     <Pencil size={16} />
                     Edit
                   </button>
 
-                  <button className="flex-1 flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 py-2 rounded-xl text-sm font-medium transition">
+                  <button
+                    onClick={() => {
+                      setShowViewModal(true);
+                      setSelectedVehicle(vehicle);
+                    }}
+                    className="flex-1 flex items-center justify-center gap-2 bg-red-50 text-yellow-600 hover:bg-yellow-100 py-2 rounded-xl text-sm font-medium transition cursor-pointer"
+                  >
+                    <Eye size={16} />
+                    View
+                  </button>
+                  <button
+                    onClick={() => handleDelete(vehicle._id)}
+                    className="flex-1 flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 py-2 rounded-xl text-sm font-medium transition cursor-pointer"
+                  >
                     <Trash2 size={16} />
                     Delete
                   </button>
@@ -171,7 +218,14 @@ function AdminVehiclePage() {
         />
       )}
 
-      {showViewModal && <VehicleViewModal vehicle={selectedVehicle} />}
+      {showViewModal && (
+        <VehicleViewModal
+          vehicle={selectedVehicle}
+          onClose={() => {
+            setShowViewModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }

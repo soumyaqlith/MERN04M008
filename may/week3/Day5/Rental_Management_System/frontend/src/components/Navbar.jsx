@@ -47,12 +47,12 @@ function Navbar() {
               Vehicles
             </Link>
 
-            <a
-              href="#"
+            <Link
+              to="/contact"
               className="text-gray-700 hover:text-black font-medium transition"
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
 

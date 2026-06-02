@@ -1,7 +1,7 @@
 // layouts/AdminLayout.jsx
 
 import React, { useEffect } from "react";
-import { Outlet, Link, useNavigate } from "react-router";
+import { Outlet, Link, useNavigate, NavLink } from "react-router";
 
 import { LayoutDashboard, Car, Users, LogOut, Phone } from "lucide-react";
 
@@ -34,10 +34,12 @@ function AdminLayout() {
       <div className="w-[260px] bg-black text-white p-5 flex flex-col justify-between">
         <div>
           <div className="mb-10 border-b border-gray-800 pb-5">
-            <h1 
-            onClick={()=>navigate("/")}
-            className="text-3xl font-bold cursor-pointer"
-            >RentRide</h1>
+            <h1
+              onClick={() => navigate("/")}
+              className="text-3xl font-bold cursor-pointer"
+            >
+              RentRide
+            </h1>
 
             <p className="text-gray-400 text-sm mt-1">Admin Panel</p>
           </div>
@@ -49,36 +51,58 @@ function AdminLayout() {
           </div>
 
           <div className="space-y-3">
-            <Link
+            <NavLink
               to="/admin"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition"
+              end
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                  isActive
+                    ? "bg-yellow-500 text-black font-semibold"
+                    : "hover:bg-gray-800 text-white"
+                }`
+              }
             >
               <LayoutDashboard size={20} />
               Dashboard
-            </Link>
+            </NavLink>
 
-            <Link
+            <NavLink
               to="/admin/vehicles"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                  isActive
+                    ? "bg-yellow-500 text-black font-semibold"
+                    : "hover:bg-gray-800 text-white"
+                }`
+              }
             >
               <Car size={20} />
               Vehicles
-            </Link>
+            </NavLink>
 
-            <Link
+            <NavLink
               to="/admin/users"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition ${isActive ? "bg-yellow-500 text-black font-semibold" : "hover:bg-gray-800 text-white"}`
+              }
             >
               <Users size={20} />
               Users
-            </Link>
-            <Link
+            </NavLink>
+
+            <NavLink
               to="/admin/contacts"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                  isActive
+                    ? "bg-yellow-500 text-black font-semibold"
+                    : "hover:bg-gray-800 text-white"
+                }`
+              }
             >
               <Phone size={20} />
               Contacts
-            </Link>
+            </NavLink>
           </div>
         </div>
 
