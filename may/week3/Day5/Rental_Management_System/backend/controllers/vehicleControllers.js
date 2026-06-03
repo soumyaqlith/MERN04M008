@@ -23,9 +23,10 @@ exports.createVehicle = async (req, res) => {
       !price_perDay ||
       !thumbnail
     ) {
-      res
-        .status(200)
-        .json({ success: false, message: "kindly send the detail" });
+      return res.status(400).json({
+        success: false,
+        message: "Kindly send all required details",
+      });
     }
 
     const vehicle = await Vehicle.create({
@@ -40,16 +41,15 @@ exports.createVehicle = async (req, res) => {
       thumbnail,
     });
 
-    if (!vehicle) {
-      res.status(200).json({ success: false, message: "failed to create" });
-    }
-    res
-      .status(201)
-      .json({ success: true, message: "successfully created", vehicle });
+    return res.status(201).json({
+      success: true,
+      message: "Successfully created",
+      vehicle,
+    });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "something gone wrong",
+      message: "Something went wrong",
       error: err.message,
     });
   }
@@ -58,17 +58,23 @@ exports.createVehicle = async (req, res) => {
 exports.getAllVehicles = async (req, res) => {
   try {
     const vehicles = await Vehicle.find();
-    if (!vehicles || vehicles.length <= 0) {
-      res.status(404).json({ success: false, message: "vehicle not found" });
+
+    if (vehicles.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No vehicles found",
+      });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "successfully fetched", vehicles });
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched",
+      vehicles,
+    });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "failed to fetch all vehicles",
+      message: "Failed to fetch vehicles",
       error: err.message,
     });
   }
@@ -81,37 +87,48 @@ exports.getVehicleById = async (req, res) => {
     const vehicle = await Vehicle.findById(id);
 
     if (!vehicle) {
-      res.status(404).json({ success: false, message: "vehicle is not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
     }
-    res
-      .status(200)
-      .json({ success: true, message: "successfully fetched", vehicle });
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched",
+      vehicle,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, message: "failed to fetch", error: err.message });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch vehicle",
+      error: err.message,
+    });
   }
 };
 
 exports.updateVehicle = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = req.body;
-    const updateVehicle = await Vehicle.findByIdAndUpdate(id, data, {
+
+    const updateVehicle = await Vehicle.findByIdAndUpdate(id, req.body, {
       new: true,
     });
 
     if (!updateVehicle) {
-      res
-        .status(200)
-        .json({ success: false, message: "some error in updating" });
+      return res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "successfully updated", updateVehicle });
+    return res.status(200).json({
+      success: true,
+      message: "Successfully updated",
+      updateVehicle,
+    });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to update",
       error: err.message,
@@ -126,16 +143,20 @@ exports.deleteVehicle = async (req, res) => {
     const deleteVehicle = await Vehicle.findByIdAndDelete(id);
 
     if (!deleteVehicle) {
-      res.status(200).json({
+      return res.status(404).json({
         success: false,
-        message: "some error when delete the vehicle",
+        message: "Vehicle not found",
       });
     }
-    res.status(200).json({ success: true, message: "successfully deleted" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully deleted",
+    });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "failed to delete",
+      message: "Failed to delete",
       error: err.message,
     });
   }
@@ -147,21 +168,35 @@ exports.updateAvailablity = async (req, res) => {
 
     const existingVehicle = await Vehicle.findById(id);
 
-    if (existingVehicle.isAvailable === false) {
-      res.status(200).json({ success: false, message: "already booked" });
-    } else {
-      await Vehicle.findByIdAndUpdate(
-        id,
-        { isAvailable: false },
-        { new: true },
-      );
-
-      res.status(200).json({success:true,message:"successfully availablity updated"})
+    if (!existingVehicle) {
+      return res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
     }
+
+    if (!existingVehicle.isAvailable) {
+      return res.status(400).json({
+        success: false,
+        message: "Already booked",
+      });
+    }
+
+    const updatedVehicle = await Vehicle.findByIdAndUpdate(
+      id,
+      { isAvailable: false },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Availability updated successfully",
+      vehicle: updatedVehicle,
+    });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "failed to update availiablity",
+      message: "Failed to update availability",
       error: err.message,
     });
   }

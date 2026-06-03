@@ -5,7 +5,7 @@ exports.createContact = async (req, res) => {
     const { name, email, phone, message } = req.body;
 
     if (!name || !email || !phone || !message) {
-      res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Daya kari field data send karantu!",
       });
@@ -19,11 +19,22 @@ exports.createContact = async (req, res) => {
     });
 
     if (!contact) {
-      res.status(200).json({ success: false, message: "failed to create" });
+      return res.status(400).json({
+        success: false,
+        message: "Failed to create",
+      });
     }
-    res.status(201).json({ success: true, message: "successfully created" });
+
+    return res.status(201).json({
+      success: true,
+      message: "Successfully created",
+      contact,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "failed to create" });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -34,25 +45,37 @@ exports.deleteContact = async (req, res) => {
     const deleteContact = await Contact.findByIdAndDelete(id);
 
     if (!deleteContact) {
-      res.status(200).json({ success: false, message: "failed to delete" });
+      return res.status(404).json({
+        success: false,
+        message: "Contact not found",
+      });
     }
-    res.status(200).json({ success: true, message: "successfully deleted" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully deleted",
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "failed to delete" });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+
 exports.getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
+    const contacts = await Contact.find().sort({ createdAt: -1 });
 
-    if (!contacts) {
-      res.status(200).json({ success: false, message: "contact not found" });
-    } else {
-      res
-        .status(200)
-        .json({ success: true, message: "successfully fetched", contacts });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched",
+      contacts,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "failed to fetch" });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
