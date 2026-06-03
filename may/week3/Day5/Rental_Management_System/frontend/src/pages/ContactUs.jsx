@@ -10,8 +10,52 @@ import {
   AtSign,
   PlayCircle,
 } from "lucide-react";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/contact`,
+        formData,
+      );
+
+      if (res.data?.success) {
+        toast.success(res.data?.message);
+      } else {
+        toast.error(res.data?.message);
+      }
+
+      setFormData({
+        name:"",
+        email:"",
+        phone:"",
+        message:""
+      })
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* HERO */}
@@ -158,7 +202,7 @@ const ContactUs = () => {
               </div>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="block mb-2 text-sm font-medium">
                   Full Name
@@ -167,6 +211,9 @@ const ContactUs = () => {
                 <input
                   type="text"
                   placeholder="Enter your name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
@@ -179,6 +226,9 @@ const ContactUs = () => {
                 <input
                   type="email"
                   placeholder="Enter your email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
@@ -191,6 +241,9 @@ const ContactUs = () => {
                 <input
                   type="tel"
                   placeholder="Enter your phone number"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
@@ -203,6 +256,9 @@ const ContactUs = () => {
                 <textarea
                   rows="5"
                   placeholder="Write your message..."
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none resize-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>

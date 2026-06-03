@@ -10,10 +10,13 @@ import {
   ArrowRight,
   IndianRupee,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 
 function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const fetchAllVehicles = async () => {
     try {
@@ -239,7 +242,10 @@ function Vehicles() {
                       <p className="text-[11px] text-gray-400">Per Day</p>
                     </div>
 
-                    <button className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-xl font-medium transition-all duration-300">
+                    <button
+                      onClick={() => navigate(`/vehicles-detail/${vehicle._id}`)}
+                      className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-xl font-medium transition-all duration-300"
+                    >
                       View Details
                     </button>
                   </div>

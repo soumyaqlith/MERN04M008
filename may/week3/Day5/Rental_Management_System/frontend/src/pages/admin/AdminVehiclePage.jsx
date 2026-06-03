@@ -63,9 +63,9 @@ function AdminVehiclePage() {
 
         if (res.data.success) {
           toast.success(res.data.message);
+          fetchVehicles();
         } else {
           toast.error(res.data.message);
-          fetchVehicles();
         }
       } else {
         toast.error("i dont want");

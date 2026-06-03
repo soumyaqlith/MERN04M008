@@ -13,6 +13,8 @@ import PublicLayout from "../components/layout/PublicLayout";
 import AdminVehiclePage from "../pages/admin/AdminVehiclePage";
 import AdminUsersPage from "../pages/admin/AdminUsersPage";
 import ContactUs from "../pages/ContactUs";
+import AdminContacts from "../pages/admin/AdminContacts";
+import VehicleDetails from "../pages/VehicleDetails";
 
 function AllRoutes() {
   return (
@@ -25,6 +27,7 @@ function AllRoutes() {
           <Route path="/" element={<Home />} />
 
           <Route path="/vehicles" element={<Vehicles />} />
+          <Route path="/vehicles-detail/:id" element={<VehicleDetails />} />
 
           <Route
             path="/profile"
@@ -41,7 +44,7 @@ function AllRoutes() {
           <Route index element={<Dashboard />} />
           <Route path="vehicles" element={<AdminVehiclePage />} />
           <Route path="users" element={<AdminUsersPage/>} />
-          <Route path="contacts" element={<h1>Contact</h1>} />
+          <Route path="contacts" element={<AdminContacts/>} />
         </Route>
       </Routes>
     </div>

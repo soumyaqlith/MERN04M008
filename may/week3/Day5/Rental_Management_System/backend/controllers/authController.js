@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
             success: true,
             message: "successfully login",
             token,
-            user:existingUser
+            user: existingUser,
           });
         } else {
           res.status(200).json({ success: false, message: "Invalid password" });
@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
 
 exports.allUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find({ role: "user" }).select("-password");
     if (!users) {
       res.status(404).json({ success: false, message: "user not found" });
     }
