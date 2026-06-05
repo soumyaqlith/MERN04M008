@@ -71,10 +71,24 @@ exports.getMyBookings = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Successfully fetched", myBookings });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "failed to fetch" });
+    return res.status(500).json({ success: false, message: "failed to fetch" });
   }
 };
 
-exports.getAllBookings = async (req, res) => {};
+exports.getAllBookings = async (req, res) => {
+  try {
+    const allBookings = await Booking.find();
+
+    if (!allBookings) {
+      return res
+        .status(404)
+        .json({ success: false, message: "booking not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "successfully fetched", allBookings });
+  } catch (error) {
+    return res.status(500).json({ sucess: false, message: "failed to fetch" });
+  }
+};
