@@ -67,7 +67,7 @@ function Profile() {
 
               <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 cursor-pointer transition-all">
                 <Car size={20} />
-                My Rentals
+                My Bookings
               </div>
 
               <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 cursor-pointer transition-all">

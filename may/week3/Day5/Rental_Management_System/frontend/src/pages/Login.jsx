@@ -10,6 +10,9 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,11 +26,12 @@ function Login() {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/login`,
         formData,
       );
-      
+
       if (res.data.success) {
         const token = res.data.token;
         const user = res.data.user;
@@ -38,9 +42,9 @@ function Login() {
           password: "",
         });
 
-        if(user.role==="user"){
+        if (user.role === "user") {
           navigate("/profile");
-        }else{
+        } else {
           navigate("/admin");
         }
         toast.success(res.data.message);
@@ -49,6 +53,8 @@ function Login() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -187,7 +193,7 @@ function Login() {
               onClick={handleLogin}
               className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-2xl font-semibold text-lg transition duration-300 shadow-lg"
             >
-              Login
+              {loading ? "Processing...":"Login"}
             </button>
           </div>
 

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { Car, Fuel, Tag, Palette, CircleCheck } from "lucide-react";
+import BookingModal from "../components/modals/BookingModal";
 
 const VehicleDetails = () => {
   const { id } = useParams();
   const [vehicle, setVehicle] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
   const getVehicleById = async () => {
     try {
@@ -133,13 +135,22 @@ const VehicleDetails = () => {
 
             {/* Rent Button */}
             <div className="mt-12">
-              <button className="w-full bg-white text-black py-4 rounded-2xl font-bold text-lg hover:bg-zinc-200 transition-all duration-300">
+              <button
+                onClick={() => setOpenModal(true)}
+                className="w-full bg-white text-black py-4 rounded-2xl font-bold text-lg hover:bg-zinc-200 transition-all duration-300"
+              >
                 Rent This Vehicle
               </button>
             </div>
           </div>
         </div>
       </div>
+      {openModal && (
+        <BookingModal
+        vehicleId={id}
+        closeModal={()=>setOpenModal(false)}
+        />
+      )}
     </div>
   );
 };

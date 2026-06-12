@@ -89,6 +89,15 @@ function AdminLayout() {
               <Users size={20} />
               Users
             </NavLink>
+            <NavLink
+              to="/admin/all-bookings"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition ${isActive ? "bg-yellow-500 text-black font-semibold" : "hover:bg-gray-800 text-white"}`
+              }
+            >
+              <Users size={20} />
+              Bookings
+            </NavLink>
 
             <NavLink
               to="/admin/contacts"
